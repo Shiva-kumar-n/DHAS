@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="Dashboard.css">
+	<title>DHAS</title>
+</head>
+<body onload="checking();">
+
+	<nav>
+		<div id="Home">HOME</div>
+		<div id="Attend"><a href="Attendance.html">ATTENDANCE</a></div>
+		<div id="Feed"><a href="Feedback.html">FEEDBACK</a></div>
+		<div id="Menu"><a href="Menu.html">MENU</a></div>
+		<div id="Profile"><a href="Profile.html">PROFILE</a></div>
+	</nav>
+	<br>
+	<div id="decoration">
+
+	<main>
+
+		<div id="user"><h1>Hello <span id="username"></span></h1></div>
+		<div id="updates">
+			<h2>Updates</h2>
+			<div id="content">
+				
+				
+			</div>
+		</div>
+	</main>
+</div>
+	<footer>
+		<div id="isLog"><%= isLogged %></div>
+	</footer>
+	
+	<script>
+		var storageData = sessionStorage;
+		if(storageData.getItem('isLogged') == null)
+		{
+			let logVar = document.getElementById('isLog');
+			var isLogged = logVar.textContent;
+			let userDetails = '<%- JSON.stringify(userDetails) %>';
+			sessionStorage.setItem('UserDetails',userDetails);
+			if(!(isLogged=='true'))
+			{
+				let h1=document.createElement('h1');
+				h1.style.color = "White";
+				h1.append('You Are Not Authorised to accesss')
+				document.body.innerHTML="";
+				document.body.append(h1);
+			}
+			else{
+				sessionStorage.setItem('isLogged','true');
+				document.getElementById('username').textContent = JSON.parse(userDetails).Username;
+			}
+		}
+		else{
+			document.getElementById('username').textContent = JSON.parse(sessionStorage.getItem('UserDetails')).Username;
+		}
+
+		async function checking()
+		{
+			let opt = {
+          		method : "GET",
+           		headers: {'Content-Type':'application/json'},
+         	}
+			let resp = await fetch('/getPosts',opt);
+			let resJs = await resp.json();
+			let main = document.getElementById('content');
+			for(i of resJs){
+				let Ele = document.createElement('div');
+				let titleEle  =document.createElement('div');
+				let Title = "Title:" + i.Title;
+				let Des = "Description:" + i.Description;
+				titleEle.appendChild(document.createTextNode(Title));
+				let desEle =document.createElement('div');
+				desEle.appendChild(document.createTextNode(Des));
+				Ele.appendChild(titleEle);
+				Ele.appendChild(desEle);
+				main.appendChild(Ele);
+			}
+		}
+		
+	</script>
+	
+</body>
+</html>

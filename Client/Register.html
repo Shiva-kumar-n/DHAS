@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="register.css">
+    <style>
+        div span{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+    	<h1>DINING HALL<br><span>ATTENDANCE</span> <br>SYSTEM</h1>
+        <form class="content reg-form" action="/verifyEmail" method="post">
+            
+                <div class="form">
+                    <div id="ErrorMessage"></div>
+                    <h2>Register Here</h2>
+                    <div>
+                        <input type="text"  name="Username" required/> <span>Enter Your Name</span>
+                    </div>
+                    <div>
+                        <input type="text"  name="UserId"  pattern="[nN][1][7][01][0-9]{3}" required/> <span>Enter College ID</span>
+                    </div>
+                    <div>
+                        <input type="password" name="Password" required minlength="8"/> <span>Enter Password</span> 
+                    </div>
+                    <div>     
+                        <input type="tel" name="Phone"  maxlength="10" id="tel" pattern="[0-9]{10}" required/> <span>Enter Phone Number</span>
+                    </div> 
+                    <div id="gender">
+                        <span>Gender :</span>
+                        <select name="Gender">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                   <div id="current-education">
+                    <center>
+                        <div>
+                        <span>Department</span>
+                        <select name="Department">
+                            <option>PUC</option>
+                            <option>Engineering</option>
+                        </select>
+                        </div>
+                        <div>
+                        <span>YEAR</span>
+                        <select name="Year">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                        </div>
+                    </center>
+                    </div><br>
+                    <div id="sq">
+                        <center>
+                            <div>
+                                <br><br>
+                                <span>Security Question</span>
+                                <select name="secu_q">
+                                    <option>What is Your Favourite Place?</option>
+                                    <option>What was the first film you saw in a theatre?</option>
+                                    <option>What was the first name of your Favourite Person?</option>
+                                </select><br>
+                                <input type="text" placeholder="Your Answer" name="secu_q_a" required>
+                            </div>
+                        </center>
+                    </div>
+                    <br><br><br><br><br><br><br><br>
+                    <button class="btnn" type="submit">Register</button>
+                    <br><br><br><br><br>
+                    <p class="link">Already Have an account?<br>
+                    <a href="Login.html">Sign In </a> here</p>
+                </div>
+        </form>
+    </div>
+  
+<script type="text/javascript">
+    function showMessage()
+    {
+        let ErrorMessage = '<%- serverMessage %>';
+        if(ErrorMessage == "User Already Existed")
+        {
+            let messageDiv = document.getElementById('ErrorMessage');
+            messageDiv.innerText = ErrorMessage;
+        }
+        else if(ErrorMessage == "Registered"){
+            alert("Registered Successfully");
+            location.href = "Login.html";
+        }
+    }
+    setTimeout(showMessage,100);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="Dashboard.css">
+	<title>DHAS</title>
+	<style>
+		main{
+			text-align: center;
+		}
+		main>div{
+			margin: auto;
+			padding: 5px;
+			margin-top: 10px;
+			background-color: azure;
+			color: black;
+			width: 80%;
+		}
+	</style>
+</head>
+<body onload="loadFeed();">
+
+	<nav>
+		<div id="Home"><a href="AdminHome.html">HOME</a></div>
+        <div id="postUpdate"><a href="updatePost.html">POST Update</a></div>
+		<div id="viewFeed" >FEEDBACKS</a></div>
+        <div id="logout"><a href="AdminLogin.html">LogOut</a></div>
+	</nav>
+    <br>
+	<div id="decoration">
+        <main id="main">
+            
+        </main>
+    </div>
+	<script>
+		async function loadFeed(){
+			let opt = {
+          		method : "GET",
+           		headers: {'Content-Type':'application/json'},
+         	}
+			let resp = await fetch('/getFeed',opt);
+			let resJs = await resp.json();
+			let main = document.getElementById('main');
+			if(resJs.length==0)
+			{
+				main.innerHTML = "No Reviews"
+			}
+			for(i of resJs){
+				let Ele = document.createElement('div');
+				let titleEle  =document.createElement('div');
+				let Title = "Area:" + i.Area;
+				let Des = "Review:" + i.review;
+				titleEle.appendChild(document.createTextNode(Title));
+				let desEle =document.createElement('div');
+				desEle.appendChild(document.createTextNode(Des));
+				Ele.appendChild(titleEle);
+				Ele.appendChild(desEle);
+				main.appendChild(Ele);
+			}
+		}
+
+		let logout = document.getElementById('logout');
+			logout.addEventListener('click',function()
+			{
+				alert("Logging Out");
+				sessionStorage.clear();
+			})
+	</script>
+</body>
+</html>

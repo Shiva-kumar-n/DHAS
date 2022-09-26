@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+        <form class="content" method="post" action="\login">
+            <h1>DINING HALL<br><span>ATTENDANCE</span> <br>SYSTEM</h1>
+                
+                <div class="form">
+                    <div id="ErrorMessage">
+                    </div>
+                    <h2>Login Here</h2>
+                    <div id="test"><div>Student</div><div id="demo"><a href="AdminLogin.html">Admin</a></div></div>
+                    <input type="text" name="Username" placeholder="Enter College ID" required/>
+                    <input type="password" name="Password" placeholder="Enter Password" required/>
+                    <button class="btnn" type="submit">Login</button><br>
+                    <div id="forget"><a href="ForgetPassword.html">Forget Password </a></div>
+                    <p class="link">Don't have an account<br>
+                    <a href="Register.html">Sign up </a> here</p> 
+                </div>
+        </form>
+    </div>
+  
+    <script>
+        function showMessage()
+        {
+            let ErrorMessage = "";
+            var LoginMessage = '<%= Message %>';
+            if(LoginMessage == "PasswordInCorrect")
+            {
+                ErrorMessage = "Incorrect Password";
+            }
+            else if(LoginMessage=="UserNotFound"){
+                
+                ErrorMessage = "Username Not Found";
+            } 
+            let ErrorMessagDiv = document.getElementById('ErrorMessage');
+            ErrorMessagDiv.innerText = ErrorMessage;
+        }
+        setTimeout(showMessage,100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="Dashboard.css">
+	<title>DHAS</title>
+	<style>
+		#decoration{
+			text-align: center;
+		}
+		textarea{
+            padding: 10px;
+            width: 30vw;
+            height: 15vh;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+		button{
+            border-radius: 10px;
+            padding: 6px;
+            color: rgb(0, 0, 0);
+            background-color: aqua;
+            margin-top: 1rem;
+        }
+
+        button:hover{
+            background-color: rgb(131, 255, 30);
+            font-weight: bolder;
+        }
+
+		input{
+			width: 50%;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+
+	<nav>
+		<div id="Home"><a href="AdminHome.html">HOME</a></div>
+        <div id="postUpdate">POST Update</div>
+		<div id="viewFeed" ><a href="FeedbackView.html">FEEDBACKS</a></div>
+        <div id="logout"><a href="AdminLogin.html">Logout</a></div>
+	</nav>
+    <br>
+	<div id="decoration">
+        <main>
+            <form method="post" action="/addPost">
+				<input type="text" placeholder="Title" name="Title" required><br><br>
+				<textarea name="Description" placeholder="Description" required></textarea><br>
+				<button type="submit">ADD</button>
+			</form>
+        </main>
+    </div>
+
+    <script>
+        let logout = document.getElementById('logout');
+			logout.addEventListener('click',function()
+			{
+				alert("Logging Out");
+                sessionStorage.clear();
+			})
+    </script>
+</body>
+</html>

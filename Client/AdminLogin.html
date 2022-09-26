@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+        <form class="content" method="post" action="\Adminlogin">
+            <h1>DINING HALL<br><span>ATTENDANCE</span> <br>SYSTEM</h1>
+                
+                <div class="form">
+                    <div id="ErrorMessage">PassWord is Incorrect</div>
+                    <h2>Login Here</h2>
+                    <div id="test"><div id="demo"><a href="Login.html">Student</a></div><div>Admin</div></div>
+                    <input type="email" name="Email" placeholder="Enter Email" required/>
+                    <input type="password" name="Password" placeholder="Enter Password" required/>
+                    <button class="btnn" type="submit">Login</button>
+                </div>
+        </form>
+    </div>
+  
+    <script>
+        function showMessage()
+        {
+            let ErrorMessage = "";
+            var LoginMessage = '<%= Message %>';
+            if(LoginMessage == "PasswordInCorrect")
+            {
+                ErrorMessage = "Incorrect Password";
+            }
+            else if(LoginMessage=="UserNotFound"){
+                
+                ErrorMessage = "Username Not Found";
+            } 
+            let ErrorMessagDiv = document.getElementById('ErrorMessage');
+            ErrorMessagDiv.innerText = ErrorMessage;
+        }
+        setTimeout(showMessage,100);
+    </script>
+</body>
+</html>

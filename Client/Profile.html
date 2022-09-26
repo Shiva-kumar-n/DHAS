@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="Dashboard.css">
+    <title>Profile</title>
+    <style>
+         #decoration{
+            margin-top: 10px;
+            text-align: center;
+        }
+        main{
+            background: wheat;
+        }
+        main h2{
+            color: black;
+        }
+        #content{
+            overflow: hidden;
+        }
+        #content div{
+            text-align: left;
+            width: 50%;
+            margin: auto;
+            margin-top: .5rem;
+        }
+
+        #logout{
+            margin-left: 2rem;
+            background-color: black;
+            color: white;
+        }
+        #logout:hover{
+            background-color: white;
+            color: black;
+        }
+        button{
+            border-radius: 10px;
+            padding: 6px;
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 137, 137);
+            margin-top: 1rem;
+        }
+
+        button:hover{
+            background-color: rgb(144, 255, 53);
+            font-weight: bolder;
+        }
+        span{
+            width: 48%;
+            display: inline-block;
+        }
+        input{
+            background-color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body onload="loadProfile();">
+    <nav>
+		<div id="Home"><a href="Home.html">HOME</a></div>
+		<div id="Attend"><a href="Attendance.html">ATTENDANCE</a></div>
+		<div id="Feed" "><a href="Feedback.html">FEEDBACK</a></div>
+		<div id="Menu"><a href="Menu.html">MENU</a></div>
+		<div id="Profile">PROFILE</div>
+	</nav>
+    
+    <div id="decoration">
+        <main>
+            
+            <div id="heading"><h2>Profile</h2></div>
+            <div id="content">
+                <div><span>NAME  </span></span>:<input id="userName" name="Username" disabled></div>
+                <div><span>ID </span>:<input id="userId" name="UserId" disabled></div>
+                <div><span>PASSWORD </span>:<input id="userPass" name="Password" disabled></div>
+                <div><span>PHONE NUMBER </span>:<input id="userPh" name="Phone" disabled></div>
+                <div><span>EMAIL </span>:<input id="userMail" name="Email" type="email" disabled></div>
+                <div><span>DEPARTMENT </span>:<input id="userDep" name="Department" disabled></div>
+                <div><span>YEAR </span>:<input id="userYear" name="Year" disabled></div>
+            </div>
+            <button type="button" id="edit" onclick="editProfile();">Edit</button> &nbsp;
+            <button type="submit" id="save" disabled onclick="saveProfile();">Save</button>
+            <button type="button" id="logout" onclick="logout();">Logout</button> 
+        </main>
+    </div>
+
+    <script>
+        function editProfile()
+        {
+            document.getElementById('save').disabled = false;
+            let inputVar = document.getElementsByTagName('input');
+            for(let i=0;i<inputVar.length;i++)
+            {
+                if(i<2)
+                {
+                    continue;
+                }
+                inputVar[i].disabled = false;
+                inputVar[i].style.border = "1px solid black"
+            }
+        }
+
+        function saveProfile()
+        {
+            alert("Saved Profile Successfully");
+            document.getElementById('save').disabled = true;
+            let inputVar = document.getElementsByTagName('input');
+            for(let i=0;i<inputVar.length;i++)
+            {
+                inputVar[i].disabled = true;
+                inputVar[i].style.border = 'none';
+            }
+            let UserId =  document.getElementById('userId').value;
+            let Password = document.getElementById('userPass').value;
+            let Phone = document.getElementById('userPh').value;
+            let Email = document.getElementById('userMail').value;
+            let Department = document.getElementById('userDep').value;
+            let Year = document.getElementById('userYear').value;
+            let options = {
+                method : "POST",
+                headers : {'Content-Type':'application/json'},
+                body : JSON.stringify({UserId,Password,Phone,Email,Department,Year})
+            }
+            fetch('/updateProfile',options).then((response) =>{
+                return(response.json())
+            }).then((data) =>{ 
+                sessionStorage.removeItem('UserDetails');
+                sessionStorage.setItem("UserDetails",JSON.stringify(data[0]));
+            });
+        }
+
+        function logout(){
+            window.open("Login.html","_self");
+            sessionStorage.clear();
+        }
+        function loadProfile()
+        {
+            let userData = JSON.parse(sessionStorage.getItem('UserDetails'));
+            document.getElementById('userName').value = userData.Username;
+            document.getElementById('userId').value = userData.UserId;
+            document.getElementById('userPass').value = userData.Password;
+            document.getElementById('userPh').value = userData.Phone;
+            document.getElementById('userMail').value = userData.Email;
+            document.getElementById('userDep').value = userData.Department;
+            document.getElementById('userYear').value = userData.Year;
+
+        }
+    </script>
+</body>
+</html>

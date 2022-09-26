@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="Dashboard.css">
+    <title>Feedback</title>
+    <style>
+        #decoration{
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        textarea{
+            padding: 10px;
+            width: 30vw;
+            height: 15vh;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        button{
+            border-radius: 10px;
+            padding: 6px;
+            color: rgb(0, 0, 0);
+            background-color: aqua;
+            /* background-color: rgb(255, 137, 137); */
+            margin-top: 1rem;
+        }
+
+        button:hover{
+            background-color: rgb(131, 255, 30);
+            font-weight: bolder;
+        }
+
+        select{
+            text-align: center;
+            padding: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+		<div id="Home"><a href="Home.html">HOME</a></div>
+		<div id="Attend"><a href="Attendance.html">ATTENDANCE</a></div>
+		<div id="Feed">FEEDBACK</div>
+		<div id="Menu"><a href="Menu.html">MENU</a></div>
+		<div id="Profile"><a href="Profile.html">PROFILE</a></div>
+	</nav>
+
+    <div id="decoration">
+        <main>
+            <div>
+                <h3>Select Area of Complaint</h3>
+                
+            </div>
+            <form method="post" action="/feedback" onsubmit="postReview();">
+                <div>
+                    <select name="Area" required>
+                        <option>Food</option>
+                        <option>Mess Staff</option>
+                        <option>Cleanliness</option>
+                        <option>Timings</option>
+                    </select>
+                    
+                </div>
+                <div id="heading"><h2>Write your complaint or review here</h2></div>
+                <div>
+                    <input name="date" id="dt" type="hidden"><br>
+                    <input name="UserId" id="uid" type="hidden"><br>
+                    <textarea id="feedback-form" name="review" required></textarea>
+                </div>   
+            
+                <button type="submit" id="sub">Submit</button> 
+            </form>
+        </main>
+    </div>
+    <script>
+        function dt()
+        {
+            let Id = document.getElementById('uid');
+            Id.value = JSON.parse(sessionStorage.getItem('UserDetails')).UserId;
+            let dtObj = document.getElementById('dt');
+            let Month = ["JAN","FEB","MAR","APR","MAY","JUN","JULY","AUG","SEP","OCT","NOV","DEC"];
+            date = new Date()
+            let dateobj = Month[date.getMonth()]+" "+date.getDate()+" "+date.getFullYear();
+            let day1 = new Date(dateobj).toString().split(" ").splice(1,3).join(" ");
+            let prevDay = new Date(day1);
+            prevDay.setDate(date.getDate() -1);
+            let day2 =prevDay.toString().split(" ").splice(1,3).join(" ");
+            dtObj.value = day2;
+            console.log(dtObj.value);
+        }
+        dt();
+
+        function postReview()
+        {
+            alert("Review Submitted");
+        }
+       
+    </script>
+</body>
+</html>

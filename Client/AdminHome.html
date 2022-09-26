@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="Dashboard.css">
+	<title>DHAS</title>
+	<style>
+		#isLog{
+			visibility: hidden;
+		}
+
+		#viewAttendance{
+			margin: auto;
+			background-color: wheat;
+			padding: 15px;
+			height: 10%;
+			color: black;
+			text-align: center;
+			
+		}
+		#temp{
+
+			word-spacing: .7rem;
+		}
+		#temp span{
+			font-weight: bolder;
+			text-decoration: underline;
+		}
+	</style>
+</head>
+<body onload="checking()";>
+
+	<nav>
+		<div id="Home">HOME</div>
+        <div id="postUpdate"><a href="updatePost.html">POST Update</a></div>
+		<div id="viewFeed"><a href="FeedbackView.html">FEEDBACKS</a></div>
+        <div id="logout"><a href="AdminLogin.html">LogOut</a></div>
+	</nav>
+	<br>
+	<div id="decoration">
+
+	<main>
+		
+		<div id="viewAttendance">
+			<div><b>Tomorrow's Attendance Count:</b></div><br>
+			<div id="temp">Breakfast: <span id="br"></span> Lunch: <span id="ln"></span> Dinner: <span id="dr"></span></div>
+	    </div>
+		<div id="updates">
+			<h2>Updates</h2>
+			<div id="content">
+				
+			</div>
+		</div>
+	</main>
+</div>
+	<footer>
+		<div id="isLog"><%= isLogged %></div>
+	</footer>
+	
+	<script>
+		var storageData = sessionStorage;
+		if(storageData.getItem('isLogged') == null)
+		{
+			let logVar = document.getElementById('isLog');
+			var isLogged = logVar.textContent;
+			let userDetails = '<%- JSON.stringify(userDetails); %>';
+			sessionStorage.setItem('UserDetails',userDetails);
+			if(!(isLogged=='true'))
+			{
+				let h1=document.createElement('h1');
+				h1.style.color = "White";
+				h1.append('You Are Not Authorised to accesss')
+				document.body.innerHTML="";
+				document.body.append(h1);
+			}
+			else{
+				sessionStorage.setItem('isLogged','true');
+			}
+		}
+		
+		async function checking()
+		{
+			let opt = {
+          		method : "GET",
+           		headers: {'Content-Type':'application/json'},
+         	}
+			let resp = await fetch('/getPosts',opt);
+			let resJs = await resp.json();
+			let main = document.getElementById('content');
+			for(i of resJs){
+				let Ele = document.createElement('div');
+				let titleEle  =document.createElement('div');
+				let Title = "Title:" + i.Title;
+				let Des = "Description:" + i.Description;
+				titleEle.appendChild(document.createTextNode(Title));
+				let desEle =document.createElement('div');
+				desEle.appendChild(document.createTextNode(Des));
+				Ele.appendChild(titleEle);
+				Ele.appendChild(desEle);
+				main.appendChild(Ele);
+			}
+			
+			let logout = document.getElementById('logout');
+			logout.addEventListener('click',function()
+			{
+				alert("Logging Out");
+				sessionStorage.clear();
+			})
+
+			async function loadFeed(){
+			let opt = {
+          		method : "GET",
+           		headers: {'Content-Type':'application/json'},
+         	}
+			let resp = await fetch('/getAttend',opt);
+			let resJs = await resp.json();
+			let main = document.getElementsByTagName('main');
+			let Month = ["JAN","FEB","MAR","APR","MAY","JUN","JULY","AUG","SEP","OCT","NOV","DEC"];
+            let date = new Date()
+            let dateobj = Month[date.getMonth()]+" "+date.getDate()+" "+date.getFullYear();
+            let TodayDate = new Date(dateobj).toString().split(" ").splice(1,3).join(" ");
+			let nextDay = new Date(TodayDate);
+			nextDay.setDate(new Date().getDate() + 1);
+            let day2 =nextDay.toString().split(" ").splice(1,3).join(" ");
+			let brCount=lnCount=drCount = 0;
+			let brVar = document.getElementById('br');
+			let lnVar = document.getElementById('ln');
+			let drVar = document.getElementById('dr');
+			for(i of resJs){
+				if(i.date == day2)
+				{
+					if(i["user-input-breakfast"]== "Yes")
+					{
+						brCount += 1;
+					}
+					if(i["user-input-lunch"] == "Yes")
+					{
+						lnCount += 1;
+					}
+					if(i["user-input-dinner"]== "Yes")
+					{
+						drCount += 1;
+					}
+				}
+			}
+			brVar.innerHTML = brCount;
+			lnVar.innerHTML = lnCount;
+			drVar.innerHTML = drCount;
+			console.log("Verified");
+		}
+		loadFeed();
+		}
+	</script>
+	
+</body>
+</html>
